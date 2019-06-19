@@ -1,0 +1,94 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'jacoco-android'
+apply plugin: "androidx.navigation.safeargs"
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+
+    defaultConfig {
+        applicationId "com.kutluoglu.foursquaredemo"
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings true
+    }
+
+//    androidExtensions {
+//        experimental = true
+//    }
+}
+
+dependencies {
+    implementation project(':presentation')
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':cache')
+    implementation project(':remote')
+
+    def mobileUiDependencies = rootProject.ext.mobileUiDependencies
+
+    implementation mobileUiDependencies.javaxInject
+    implementation mobileUiDependencies.javaxAnnotation
+
+    implementation mobileUiDependencies.kotlin
+    implementation mobileUiDependencies.rxKotlin
+    implementation mobileUiDependencies.rxAndroid
+    implementation mobileUiDependencies.xAppCompat
+    implementation mobileUiDependencies.xCore
+    implementation mobileUiDependencies.googleMeterial
+    implementation mobileUiDependencies.constraint
+    implementation mobileUiDependencies.dagger
+    implementation mobileUiDependencies.daggerSupport
+    implementation mobileUiDependencies.navGraphFragment
+    implementation mobileUiDependencies.navGraphUi
+    implementation mobileUiDependencies.navGraphCommon
+    implementation mobileUiDependencies.navGraphRuntime
+    implementation mobileUiDependencies.glide
+
+
+    implementation mobileUiDependencies.lifeCycleRuntime
+    implementation mobileUiDependencies.lifeCycleExtensions
+
+    implementation mobileUiDependencies.roomRuntime
+    implementation mobileUiDependencies.roomRxJava
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    kapt mobileUiDependencies.roomCompiler
+    kapt mobileUiDependencies.daggerCompiler
+    kapt mobileUiDependencies.daggerProcessor
+    kapt mobileUiDependencies.glideCompiler
+
+}
